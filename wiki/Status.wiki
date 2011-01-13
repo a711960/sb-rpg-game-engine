@@ -1,0 +1,4 @@
+basic script analyze - done.
+script functions implementation in analyzator - 0%
+characters handling - working
+places handling - 0%
