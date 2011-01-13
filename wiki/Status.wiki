@@ -3,3 +3,4 @@ script functions implementation in analyzator - 0%
 characters handling - working 
 places handling - 0% 
 event handling  - 0%
+main character load form - done.
