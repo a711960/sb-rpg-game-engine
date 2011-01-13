@@ -36,17 +36,13 @@ void resources::loadcharscript()
 	{
 		character tmp;
 		string tmps;
-		getline(charfile,tmps);
-		charfile >> tmp.ID;
-		getline(charfile,tmps);
-		getline(charfile,tmps);
-		tmp.name = tmps;
-		getline(charfile,tmps);
-		getline(charfile,tmps);
-		charfile >> tmp.HP;
-		getline(charfile,tmps);
-		getline(charfile,tmps);
-		charfile >> tmp.HP_MAX;
+		while(tmps != "-"){
+			getline(charfile,tmps);
+			if (tmps == "ID:") charfile >> tmp.ID;
+			if (tmps == "HP:") charfile >> tmp.HP;
+			if (tmps == "HP_MAX:") charfile >> tmp.HP_MAX;
+			if (tmps == "NAME:") getline(charfile,tmp.name);
+		}
 		characters.push_back(tmp);
 	}
 }
