@@ -4,6 +4,7 @@
 #include <string>
 #include "scriptline.h"
 #include "character.h"
+#include "location.h"
 
 using namespace std;
 
@@ -15,8 +16,11 @@ public:
 	scriptline active; // aktywna linia 
 	ifstream msfile; // strumieñ g³ównego skryptu
 	ifstream charfile; // strumieñ danych postaci, potworów
+	ifstream locfile;
 	vector<character> characters;
+	vector<location> locations;
 	void loadcharscript();
+	void loadlocscript();
 	void interpretuj();
 	void nextline(); 
 	resources(void);

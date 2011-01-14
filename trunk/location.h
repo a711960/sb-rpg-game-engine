@@ -10,6 +10,7 @@ public:
 	int ID;
 	int enemynumber;
 	int npcnumber;
+	string name;
 	string description;
 	vector<character> enemies;
 	vector<int> enemyids;
