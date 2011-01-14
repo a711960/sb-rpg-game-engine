@@ -1,5 +1,5 @@
 ID:
-1
+0
 NAME:
 Hero
 HP:
