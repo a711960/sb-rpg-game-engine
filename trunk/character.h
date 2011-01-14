@@ -10,6 +10,7 @@ public:
 	string name;
 	int HP;
 	int HP_MAX;
+	int locationid;
 	character(void);
 	~character(void);
 };

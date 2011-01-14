@@ -6,4 +6,6 @@ HP:
 1
 HP_MAX:
 1
+LOCATIONID:
+0
 -
