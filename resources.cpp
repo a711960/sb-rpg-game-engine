@@ -81,11 +81,11 @@ void resources::loadlocscript()
 					tmp.npcids.push_back(tmpi);
 				}
 			}
-			for ( int i = 0; i < tmp.enemynumber; i++)
-			{
-				tmp.enemies.push_back(characters[tmp.enemyids[i]]);
-			}
-			locations.push_back(tmp);
 		}
+		for ( int i = 0; i < tmp.enemynumber; i++)
+		{
+			tmp.enemies.push_back(characters[tmp.enemyids[i]]);
+		}
+		locations.push_back(tmp);
 	}
 }
