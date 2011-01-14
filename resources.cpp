@@ -5,7 +5,9 @@ resources::resources(void)
 {
 	msfile.open("mainscript.sc");
 	charfile.open("charscript.sc");
+	locfile.open("locscript.sc");
 	loadcharscript();
+	loadlocscript();
 	line = 0;
 }
 
@@ -32,7 +34,7 @@ void resources::interpretuj()
 
 void resources::loadcharscript()
 {
-	while (!charfile.eof()) // rozwi¹zanie bardzo tymczasowe
+	while (!charfile.eof()) 
 	{
 		character tmp;
 		string tmps;
@@ -73,7 +75,7 @@ void resources::loadlocscript()
 			}
 			if (tmps == "NPCIDS:")
 			{
-				for ( int i = 0; i < tmp.enemynumber; i++)
+				for ( int i = 0; i < tmp.npcnumber; i++)
 				{
 					locfile >> tmpi;
 					tmp.npcids.push_back(tmpi);
