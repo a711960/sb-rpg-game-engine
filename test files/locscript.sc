@@ -1,0 +1,15 @@
+ID:
+1
+NAME:
+Tower
+DESCRIPTION:
+bla bla bla
+ENEMYNUMBER:
+1
+NPCNUMBER:
+1
+ENEMYIDS:
+1
+NPCIDS:
+1
+-
