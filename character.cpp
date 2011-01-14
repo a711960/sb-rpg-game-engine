@@ -3,7 +3,6 @@
 #include "scriptline.h"
 #include <cstdlib>
 #include <iostream>
-#include "game.h"
 
 using namespace std;
 
