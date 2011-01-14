@@ -3,6 +3,7 @@
 #include "scriptline.h"
 #include <cstdlib>
 #include <iostream>
+#include "game.h"
 
 using namespace std;
 
@@ -21,14 +22,31 @@ void character::characteraction()
 	getline(cin,line);
 	scriptline activeline;
 	activeline.changestring(line);
-	if (!activeline.words.empty()) {
+	if (!activeline.words.empty()) 
+	{
 		if ( activeline.words[0] == "exit")
 		{
-			int loc;
-			if (loc = atoi(activeline.words[1].c_str()))
+			if ( activeline.words.size() > 1)
 			{
-				changelocation(loc);
+				int loc;
+				if (loc = atoi(activeline.words[1].c_str()))
+				{
+					//bool t = 0;
+					//for ( int i = 0; i < locations[locationid].exitids.size(); i++)
+					//{
+					//if ( loc == locations[locationid].exitids[i])
+					//{
+					//	t = 1;
+					//}
+					//	if (t == 1){
+							changelocation(loc);
+					//	}
+					//}
+				}
 			}
+		}
+		if ( activeline.words[0] == "look") {
+			//cout << locations[locationid].description << endl;
 		}
 	}
 }
