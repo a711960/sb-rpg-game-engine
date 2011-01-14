@@ -1,5 +1,6 @@
 #include "resources.h"
 #include <iostream>
+#include <cstdlib>
 
 resources::resources(void)
 {
@@ -29,6 +30,14 @@ void resources::interpretuj()
 	if (active.words[0] == "write")
 	{
 		cout << active.words[1] << endl;
+	}
+	if (active.words[0] == "if")
+	{
+		if (active.words[1] == "location")
+		{
+			int loc = atoi(active.words[2].c_str());
+			while (characters[0].locationid != loc) characters[0].characteraction();
+		}
 	}
 }
 

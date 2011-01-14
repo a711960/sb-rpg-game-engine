@@ -1,7 +1,6 @@
 #include "game.h"
 #include <string>
 
-
 game::game(void)
 {
 	game::stan = start;

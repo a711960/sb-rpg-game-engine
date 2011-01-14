@@ -35,8 +35,9 @@ void scriptline::changestring(string line)
 		{
 			while(line[i] != ' ') // co spacje kolejne s³owo
 			{
-				tmp.push_back(line[i]);
+			tmp.push_back(line[i]);
 			i++;
+			if (i == line.length()) break;
 			}
 			words.push_back(tmp);
 			tmp.clear();
