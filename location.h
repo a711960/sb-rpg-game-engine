@@ -15,6 +15,7 @@ public:
 	vector<character> enemies;
 	vector<int> enemyids;
 	vector<int> npcids;
+	vector<int> exitids;
 	void spawnenemys();
 	location(void);
 	~location(void);

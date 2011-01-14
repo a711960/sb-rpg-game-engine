@@ -45,6 +45,7 @@ void resources::loadcharscript()
 			if (tmps == "HP:") charfile >> tmp.HP;
 			if (tmps == "HP_MAX:") charfile >> tmp.HP_MAX;
 			if (tmps == "NAME:") getline(charfile,tmp.name);
+			if (tmps == "LOCATIONID:") charfile >> tmp.locationid;
 		}
 		characters.push_back(tmp);
 	}
@@ -80,6 +81,11 @@ void resources::loadlocscript()
 					locfile >> tmpi;
 					tmp.npcids.push_back(tmpi);
 				}
+			}
+			if (tmps == "EXITIDS:")
+			{
+				locfile >> tmpi;
+				tmp.exitids.push_back(tmpi);
 			}
 		}
 		for ( int i = 0; i < tmp.enemynumber; i++)
