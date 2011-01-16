@@ -11,7 +11,6 @@ public:
 	int HP;
 	int HP_MAX;
 	int locationid;
-	void characteraction();
 	void changelocation(int loc);
 	character(void);
 	~character(void);

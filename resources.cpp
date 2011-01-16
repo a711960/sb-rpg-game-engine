@@ -36,7 +36,7 @@ void resources::interpretuj()
 		if (active.words[1] == "location")
 		{
 			int loc = atoi(active.words[2].c_str());
-			while (characters[0].locationid != loc) characters[0].characteraction();
+			while (characters[0].locationid != loc) characteraction(&characters[0]);
 		}
 	}
 }
@@ -102,5 +102,40 @@ void resources::loadlocscript()
 			tmp.enemies.push_back(characters[tmp.enemyids[i]]);
 		}
 		locations.push_back(tmp);
+	}
+}
+
+void resources::characteraction(character* a)
+{
+	string line;
+	getline(cin,line);
+	scriptline activeline;
+	activeline.changestring(line);
+	if (!activeline.words.empty()) 
+	{
+		if ( activeline.words[0] == "exit")
+		{
+			if ( activeline.words.size() > 1)
+			{
+				int loc;
+				if (loc = atoi(activeline.words[1].c_str()))
+				{
+					bool t = 0;
+					for ( int i = 0; i < locations[a->locationid].exitids.size(); i++)
+					{
+					if ( loc == locations[a->locationid].exitids[i])
+					{
+						t = 1;
+					}
+						if (t == 1){
+							a->changelocation(loc);
+						}
+					}
+				}
+			}
+		}
+		if ( activeline.words[0] == "look") {
+			cout << locations[a->locationid].description << endl;
+		}
 	}
 }
