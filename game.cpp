@@ -19,8 +19,8 @@ void game::gpause()
 void game::gingame()
 {
 	game::stan = ingame;
-	while(!ms.msfile.eof())// sprawdza czy plik siê skoñczy³
+	while(!ms.msfile.eof())
 	{
-		ms.nextline();//odpala interpratacje kolejnej lini w pliku
+		ms.nextline();
 	}
 }

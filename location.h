@@ -10,13 +10,14 @@ public:
 	int ID;
 	int enemynumber;
 	int npcnumber;
+	int exitnumber;
 	string name;
 	string description;
 	vector<character> enemies;
 	vector<int> enemyids;
 	vector<int> npcids;
 	vector<int> exitids;
-	void spawnenemys();
+	void respawnenemys();
 	location(void);
 	~location(void);
 };

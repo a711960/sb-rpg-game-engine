@@ -11,6 +11,6 @@ location::~location(void)
 {
 }
 
-void location::spawnenemys()
+void location::respawnenemys()
 {
 }
