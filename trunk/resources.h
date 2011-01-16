@@ -23,6 +23,7 @@ public:
 	void loadlocscript();
 	void interpretuj();
 	void nextline(); 
+	void characteraction(character* a);
 	resources(void);
 	~resources(void);
 };
