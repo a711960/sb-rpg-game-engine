@@ -15,4 +15,3 @@ public:
 	character(void);
 	~character(void);
 };
-

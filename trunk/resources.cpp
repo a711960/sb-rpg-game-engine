@@ -19,9 +19,9 @@ resources::~resources(void)
 
 void resources::nextline()
 {
-	this->line = this->line + 1; // zwiêksza numer lini
-	getline(msfile,activeline); // pobiera aktywn¹ linie do pliku pomocniczego
-	active.changestring(activeline); // ³aduje linie do scriptline, aby podzieli³ j¹ na wyra¿enia
+	this->line = this->line + 1;
+	getline(msfile,activeline);
+	active.changestring(activeline); 
 	interpretuj();
 }
 
@@ -62,46 +62,52 @@ void resources::loadcharscript()
 
 void resources::loadlocscript()
 {
+	int k = 0;
 	while (!locfile.eof())
 	{
 		location tmp;
+		locations.push_back(tmp);
 		string tmps;
 		int tmpi;
 		while(tmps != "-")
 		{
 			getline(locfile,tmps);
-			if (tmps == "ID:") locfile >> tmp.ID;
-			if (tmps == "NAME:") getline(locfile,tmp.name);
-			if (tmps == "DESCRIPTION:") getline(locfile,tmp.description);
-			if (tmps == "ENEMYNUMBER:") locfile >> tmp.enemynumber;
-			if (tmps == "NPCNUMBER:") locfile >> tmp.npcnumber;
+			if (tmps == "ID:") locfile >> locations[k].ID;
+			if (tmps == "NAME:") getline(locfile,locations[k].name);
+			if (tmps == "DESCRIPTION:") getline(locfile,locations[k].description);
+			if (tmps == "ENEMYNUMBER:") locfile >> locations[k].enemynumber;
+			if (tmps == "NPCNUMBER:") locfile >> locations[k].npcnumber;
+			if (tmps == "EXITNUMBER:") locfile >> locations[k].exitnumber;
 			if (tmps == "ENEMYIDS:") 
 			{
-				for ( int i = 0; i < tmp.enemynumber; i++) 
+				for ( int i = 0; i < locations[k].enemynumber; i++) 
 				{
 					locfile >> tmpi;
-					tmp.enemyids.push_back(tmpi);
+					locations[k].enemyids.push_back(tmpi);
 				}
 			}
 			if (tmps == "NPCIDS:")
 			{
-				for ( int i = 0; i < tmp.npcnumber; i++)
+				for ( int i = 0; i < locations[k].npcnumber; i++)
 				{
 					locfile >> tmpi;
-					tmp.npcids.push_back(tmpi);
+					locations[k].npcids.push_back(tmpi);
 				}
 			}
 			if (tmps == "EXITIDS:")
 			{
-				locfile >> tmpi;
-				tmp.exitids.push_back(tmpi);
+				for ( int i = 0; i < locations[k].exitnumber; i++)
+				{
+					locfile >> tmpi;
+					locations[k].exitids.push_back(tmpi);
+				}
 			}
 		}
-		for ( int i = 0; i < tmp.enemynumber; i++)
+		for ( int i = 0; i < locations[k].enemynumber; i++)
 		{
-			tmp.enemies.push_back(characters[tmp.enemyids[i]]);
+			locations[k].enemies.push_back(characters[locations[k].enemyids[i]]);
 		}
-		locations.push_back(tmp);
+		k++;
 	}
 }
 
@@ -123,14 +129,16 @@ void resources::characteraction(character* a)
 					bool t = 0;
 					for ( int i = 0; i < locations[a->locationid].exitids.size(); i++)
 					{
-					if ( loc == locations[a->locationid].exitids[i])
-					{
-						t = 1;
+						if ( loc == locations[a->locationid].exitids[i])
+						{
+							t = 1;
+						}
+						
 					}
-						if (t == 1){
+					if (t == 1)
+						{
 							a->changelocation(loc);
 						}
-					}
 				}
 			}
 		}
