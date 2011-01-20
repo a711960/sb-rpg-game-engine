@@ -9,3 +9,14 @@ HP_MAX:
 LOCATIONID:
 0
 -
+ID:
+1
+NAME:
+Rat
+HP:
+5
+HP_MAX:
+5
+LOCATIONID:
+1
+-

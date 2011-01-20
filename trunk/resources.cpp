@@ -49,6 +49,7 @@ void resources::loadcharscript()
 		string tmps;
 		while(tmps != "-")
 		{
+			tmp.locationid = 0;
 			getline(charfile,tmps);
 			if (tmps == "ID:") charfile >> tmp.ID;
 			if (tmps == "HP:") charfile >> tmp.HP;
@@ -62,52 +63,52 @@ void resources::loadcharscript()
 
 void resources::loadlocscript()
 {
-	int k = 0;
 	while (!locfile.eof())
 	{
 		location tmp;
-		locations.push_back(tmp);
 		string tmps;
 		int tmpi;
 		while(tmps != "-")
 		{
 			getline(locfile,tmps);
-			if (tmps == "ID:") locfile >> locations[k].ID;
-			if (tmps == "NAME:") getline(locfile,locations[k].name);
-			if (tmps == "DESCRIPTION:") getline(locfile,locations[k].description);
-			if (tmps == "ENEMYNUMBER:") locfile >> locations[k].enemynumber;
-			if (tmps == "NPCNUMBER:") locfile >> locations[k].npcnumber;
-			if (tmps == "EXITNUMBER:") locfile >> locations[k].exitnumber;
+			if (tmps == "ID:") locfile >> tmp.ID;
+			if (tmps == "NAME:") getline(locfile,tmp.name);
+			if (tmps == "DESCRIPTION:") getline(locfile,tmp.description);
+			if (tmps == "ENEMYNUMBER:") locfile >> tmp.enemynumber;
+			if (tmps == "NPCNUMBER:") locfile >> tmp.npcnumber;
+			if (tmps == "EXITNUMBER:") locfile >> tmp.exitnumber;
 			if (tmps == "ENEMYIDS:") 
 			{
-				for ( int i = 0; i < locations[k].enemynumber; i++) 
+				for ( int i = 0; i < tmp.enemynumber; i++) 
 				{
 					locfile >> tmpi;
-					locations[k].enemyids.push_back(tmpi);
+					tmp.enemyids.push_back(tmpi);
 				}
 			}
 			if (tmps == "NPCIDS:")
 			{
-				for ( int i = 0; i < locations[k].npcnumber; i++)
+				for ( int i = 0; i < tmp.npcnumber; i++)
 				{
 					locfile >> tmpi;
-					locations[k].npcids.push_back(tmpi);
+					tmp.npcids.push_back(tmpi);
 				}
 			}
 			if (tmps == "EXITIDS:")
 			{
-				for ( int i = 0; i < locations[k].exitnumber; i++)
+				for ( int i = 0; i < tmp.exitnumber; i++)
 				{
 					locfile >> tmpi;
-					locations[k].exitids.push_back(tmpi);
+					tmp.exitids.push_back(tmpi);
 				}
 			}
 		}
-		for ( int i = 0; i < locations[k].enemynumber; i++)
+		for ( int i = 0; i < tmp.enemynumber; i++)
 		{
-			locations[k].enemies.push_back(characters[locations[k].enemyids[i]]);
+			tmp.enemies.push_back(characters[tmp.enemyids[i]]);
+			tmp.enemies[i].locationid = tmp.ID;
 		}
-		k++;
+		locations.insert(locations.end(),tmp);
+		
 	}
 }
 
@@ -127,7 +128,7 @@ void resources::characteraction(character* a)
 				if (loc = atoi(activeline.words[1].c_str()))
 				{
 					bool t = 0;
-					for ( int i = 0; i < locations[a->locationid].exitids.size(); i++)
+					for (unsigned int i = 0; i < locations[a->locationid].exitids.size(); i++)
 					{
 						if ( loc == locations[a->locationid].exitids[i])
 						{
