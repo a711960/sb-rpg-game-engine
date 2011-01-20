@@ -18,6 +18,7 @@ public:
 	vector<int> npcids;
 	vector<int> exitids;
 	void respawnenemys();
+	location(const location &cplocation);
 	location(void);
 	~location(void);
 };
