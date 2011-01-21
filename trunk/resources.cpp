@@ -1,6 +1,9 @@
 #include "resources.h"
 #include <iostream>
+#include <sstream>
 #include <cstdlib>
+
+
 
 resources::resources(void)
 {
@@ -15,6 +18,14 @@ resources::resources(void)
 
 resources::~resources(void)
 {
+}
+
+int stringtoint(string input)
+{
+	stringstream converter(input);
+	int wynik;
+	converter >> wynik;
+	return wynik;
 }
 
 void resources::nextline()
@@ -43,19 +54,37 @@ void resources::interpretuj()
 
 void resources::loadcharscript()
 {
-	while (!charfile.eof()) 
+	vector<string> filedata;
+	string line;
+	if(charfile.is_open())
+	{
+		while(charfile.good())
+		{
+			getline(charfile,line);
+			filedata.push_back(line);
+		}
+		charfile.close();
+	}
+
+	size_t j = 0;
+
+	while (j < filedata.size()) 
 	{
 		character tmp;
-		string tmps;
+		string tmps = filedata[j];
+		j++;
 		while(tmps != "-")
 		{
 			tmp.locationid = 0;
 			getline(charfile,tmps);
-			if (tmps == "ID:") charfile >> tmp.ID;
-			if (tmps == "HP:") charfile >> tmp.HP;
-			if (tmps == "HP_MAX:") charfile >> tmp.HP_MAX;
-			if (tmps == "NAME:") getline(charfile,tmp.name);
-			if (tmps == "LOCATIONID:") charfile >> tmp.locationid;
+			if (tmps == "ID:") tmp.ID = stringtoint(filedata[j]);
+			if (tmps == "HP:") tmp.HP = stringtoint(filedata[j]);
+			if (tmps == "HP_MAX:") tmp.HP_MAX = stringtoint(filedata[j]);
+			if (tmps == "NAME:") tmp.name = filedata[j];
+			if (tmps == "LOCATIONID:") tmp.locationid = stringtoint(filedata[j]);
+			j++;
+			tmps = filedata[j];
+			j++;
 		}
 		characters.push_back(tmp);
 	}
@@ -63,52 +92,66 @@ void resources::loadcharscript()
 
 void resources::loadlocscript()
 {
-	while (!locfile.eof())
+	vector<string> filedata;
+	string line;
+	if(locfile.is_open())
+	{
+		while(locfile.good())
+		{
+			getline(locfile,line);
+			filedata.push_back(line);
+		}
+		locfile.close();
+	}
+
+	size_t j = 0;
+	while (j < filedata.size())
 	{
 		location tmp;
-		string tmps;
-		int tmpi;
+		string tmps = filedata[j];
+		j++;
 		while(tmps != "-")
 		{
-			getline(locfile,tmps);
-			if (tmps == "ID:") locfile >> tmp.ID;
-			if (tmps == "NAME:") getline(locfile,tmp.name);
-			if (tmps == "DESCRIPTION:") getline(locfile,tmp.description);
-			if (tmps == "ENEMYNUMBER:") locfile >> tmp.enemynumber;
-			if (tmps == "NPCNUMBER:") locfile >> tmp.npcnumber;
-			if (tmps == "EXITNUMBER:") locfile >> tmp.exitnumber;
+			if (tmps == "ID:") tmp.ID = stringtoint(filedata[j]);
+			if (tmps == "NAME:") tmp.name = filedata[j];
+			if (tmps == "DESCRIPTION:") tmp.description = filedata[j];
+			if (tmps == "ENEMYNUMBER:") tmp.enemynumber = stringtoint(filedata[j]);
+			if (tmps == "NPCNUMBER:") tmp.npcnumber = stringtoint(filedata[j]);
+			if (tmps == "EXITNUMBER:") tmp.exitnumber = stringtoint(filedata[j]);
 			if (tmps == "ENEMYIDS:") 
 			{
 				for ( int i = 0; i < tmp.enemynumber; i++) 
 				{
-					locfile >> tmpi;
-					tmp.enemyids.push_back(tmpi);
+					tmp.enemyids.push_back(stringtoint(filedata[j]));
+					if(tmp.enemynumber - 1 != i) j++;
 				}
 			}
 			if (tmps == "NPCIDS:")
 			{
 				for ( int i = 0; i < tmp.npcnumber; i++)
 				{
-					locfile >> tmpi;
-					tmp.npcids.push_back(tmpi);
+					tmp.npcids.push_back(stringtoint(filedata[j]));
+					if(tmp.npcnumber - 1 != i) j++;
 				}
 			}
 			if (tmps == "EXITIDS:")
 			{
 				for ( int i = 0; i < tmp.exitnumber; i++)
 				{
-					locfile >> tmpi;
-					tmp.exitids.push_back(tmpi);
+					tmp.exitids.push_back(stringtoint(filedata[j]));
+					if(tmp.exitnumber - 1 != i) j++;
 				}
 			}
+			j++;
+			tmps = filedata[j];
+			j++;
 		}
 		for ( int i = 0; i < tmp.enemynumber; i++)
 		{
 			tmp.enemies.push_back(characters[tmp.enemyids[i]]);
 			tmp.enemies[i].locationid = tmp.ID;
 		}
-		locations.insert(locations.end(),tmp);
-		
+		locations.push_back(tmp);		
 	}
 }
 
@@ -116,19 +159,19 @@ void resources::characteraction(character* a)
 {
 	string line;
 	getline(cin,line);
-	scriptline activeline;
-	activeline.changestring(line);
-	if (!activeline.words.empty()) 
+	scriptline actionline;
+	actionline.changestring(line);
+	if (!actionline.words.empty()) 
 	{
-		if ( activeline.words[0] == "exit")
+		if ( actionline.words[0] == "exit")
 		{
-			if ( activeline.words.size() > 1)
+			if ( actionline.words.size() > 1)
 			{
 				int loc;
-				if (loc = atoi(activeline.words[1].c_str()))
+				if (loc = stringtoint(actionline.words[1]))
 				{
 					bool t = 0;
-					for (unsigned int i = 0; i < locations[a->locationid].exitids.size(); i++)
+					for (unsigned int i = 0; i < locations[a->locationid].exitnumber; i++)
 					{
 						if ( loc == locations[a->locationid].exitids[i])
 						{
@@ -143,7 +186,7 @@ void resources::characteraction(character* a)
 				}
 			}
 		}
-		if ( activeline.words[0] == "look") {
+		if ( actionline.words[0] == "look") {
 			cout << locations[a->locationid].description << endl;
 		}
 	}

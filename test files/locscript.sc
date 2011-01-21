@@ -18,7 +18,7 @@ ID:
 1
 NAME:
 Bridge
-DECRIPTION:
+DESCRIPTION:
 Simple bridge
 ENEMYNUMBER:
 1
