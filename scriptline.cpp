@@ -35,9 +35,9 @@ void scriptline::changestring(string line)
 		{
 			while(line[i] != ' ') 
 			{
-			tmp.push_back(line[i]);
-			i++;
-			if (i == line.length()) break;
+				tmp.push_back(line[i]);
+				i++;
+				if (i == line.length()) break;
 			}
 			words.push_back(tmp);
 			tmp.clear();
