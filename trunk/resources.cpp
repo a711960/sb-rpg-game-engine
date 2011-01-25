@@ -167,8 +167,8 @@ void resources::characteraction(character* a)
 		{
 			if ( actionline.words.size() > 1)
 			{
-				int loc;
-				if (loc = stringtoint(actionline.words[1]))
+				int loc = stringtoint(actionline.words[1]);
+				if (loc >= 0)
 				{
 					bool t = 0;
 					for (unsigned int i = 0; i < locations[a->locationid].exitnumber; i++)
