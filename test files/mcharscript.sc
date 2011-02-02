@@ -1,0 +1,11 @@
+ID:
+0
+NAME:
+Sephirot
+HP:
+5
+HP_MAX:
+5
+LOC_ID:
+0
+-
