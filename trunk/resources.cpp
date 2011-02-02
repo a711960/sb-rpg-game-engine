@@ -187,7 +187,13 @@ void resources::characteraction(character* a)
 			}
 		}
 		if ( actionline.words[0] == "look") {
+			cout << locations[a->locationid].name << endl;
 			cout << locations[a->locationid].description << endl;
+			cout << "Exits: " << endl;
+			for(int i = 0; i < locations[a->locationid].exitnumber; i++)
+			{
+				cout << locations[locations[a->locationid].exitids[i]].name << " - " << locations[a->locationid].exitids[i] << endl;
+			}
 		}
 	}
 }
