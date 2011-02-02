@@ -5,15 +5,9 @@ character::character(void)
 	ID = 0;
 	HP = 1;
 	HP_MAX = 1;
-	locationid = 0;
 }
 
 
 character::~character(void)
 {
-}
-
-void character::changelocation(int loc)
-{
-	locationid = loc;
 }

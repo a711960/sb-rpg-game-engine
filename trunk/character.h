@@ -10,8 +10,6 @@ public:
 	string name;
 	int HP;
 	int HP_MAX;
-	int locationid;
-	void changelocation(int loc);
 	character(void);
 	~character(void);
 };

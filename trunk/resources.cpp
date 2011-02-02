@@ -10,11 +10,13 @@ resources::resources(void)
 	msfile.open("mainscript.sc");
 	charfile.open("charscript.sc");
 	locfile.open("locscript.sc");
+	mcharfile.open("mcharscript.sc");
+//	npcfile.open("npcscript.sc");
 	loadcharscript();
+	loadmcharscript();
 	loadlocscript();
 	line = 0;
 }
-
 
 resources::~resources(void)
 {
@@ -47,7 +49,7 @@ void resources::interpretuj()
 		if (active.words[1] == "location")
 		{
 			int loc = atoi(active.words[2].c_str());
-			while (characters[0].locationid != loc) characteraction(&characters[0]);
+			while (mcharacters[0].locid != loc) mcharacteraction(&mcharacters[0]);
 		}
 	}
 }
@@ -75,13 +77,11 @@ void resources::loadcharscript()
 		j++;
 		while(tmps != "-")
 		{
-			tmp.locationid = 0;
 			getline(charfile,tmps);
 			if (tmps == "ID:") tmp.ID = stringtoint(filedata[j]);
 			if (tmps == "HP:") tmp.HP = stringtoint(filedata[j]);
 			if (tmps == "HP_MAX:") tmp.HP_MAX = stringtoint(filedata[j]);
 			if (tmps == "NAME:") tmp.name = filedata[j];
-			if (tmps == "LOCATIONID:") tmp.locationid = stringtoint(filedata[j]);
 			j++;
 			tmps = filedata[j];
 			j++;
@@ -149,13 +149,48 @@ void resources::loadlocscript()
 		for ( int i = 0; i < tmp.enemynumber; i++)
 		{
 			tmp.enemies.push_back(characters[tmp.enemyids[i]]);
-			tmp.enemies[i].locationid = tmp.ID;
 		}
 		locations.push_back(tmp);		
 	}
 }
 
-void resources::characteraction(character* a)
+void resources::loadmcharscript(){
+	vector<string> filedata;
+	string line;
+	if(mcharfile.is_open())
+	{
+		while(charfile.good())
+		{
+			getline(mcharfile,line);
+			filedata.push_back(line);
+		}
+		charfile.close();
+	}
+
+	size_t j = 0;
+
+	while(j < filedata.size())
+	{
+		mcharacter tmp;
+		string tmps = filedata[j];
+		j++;
+		while(tmps != "-")
+		{
+			getline(mcharfile,tmps);
+			if (tmps == "ID:") tmp.ID = stringtoint(filedata[j]);
+			if (tmps == "NAME:") tmp.name = filedata[j];
+			if (tmps == "HP:") tmp.HP = stringtoint(filedata[j]);
+			if (tmps == "HP_MAX") tmp.HP_MAX = stringtoint(filedata[j]);
+			if (tmps == "LOC_ID:") tmp.locid = stringtoint(filedata[j]);
+			j++;
+			tmps = filedata[j];
+			j++;
+		}
+		mcharacters.push_back(tmp);
+	}
+}
+
+void resources::mcharacteraction(mcharacter* a)
 {
 	string line;
 	getline(cin,line);
@@ -171,9 +206,9 @@ void resources::characteraction(character* a)
 				if (loc >= 0)
 				{
 					bool t = 0;
-					for (unsigned int i = 0; i < locations[a->locationid].exitnumber; i++)
+					for (unsigned int i = 0; i < locations[a->locid].exitnumber; i++)
 					{
-						if ( loc == locations[a->locationid].exitids[i])
+						if ( loc == locations[a->locid].exitids[i])
 						{
 							t = 1;
 						}
@@ -187,12 +222,12 @@ void resources::characteraction(character* a)
 			}
 		}
 		if ( actionline.words[0] == "look") {
-			cout << locations[a->locationid].name << endl;
-			cout << locations[a->locationid].description << endl;
+			cout << locations[a->locid].name << endl;
+			cout << locations[a->locid].description << endl;
 			cout << "Exits: " << endl;
-			for(int i = 0; i < locations[a->locationid].exitnumber; i++)
+			for(int i = 0; i < locations[a->locid].exitnumber; i++)
 			{
-				cout << locations[locations[a->locationid].exitids[i]].name << " - " << locations[a->locationid].exitids[i] << endl;
+				cout << locations[locations[a->locid].exitids[i]].name << " - " << locations[a->locid].exitids[i] << endl;
 			}
 		}
 	}
