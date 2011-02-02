@@ -5,6 +5,8 @@
 #include "scriptline.h"
 #include "character.h"
 #include "location.h"
+#include "mcharacter.h"
+#include "npc.h"
 
 using namespace std;
 
@@ -16,14 +18,19 @@ public:
 	scriptline active;
 	ifstream msfile; 
 	ifstream charfile; 
-	ifstream locfile; 
+	ifstream locfile;
+	ifstream mcharfile;
+//	ifstream npcfile;
 	vector<character> characters;
 	vector<location> locations;
+	vector<mcharacter> mcharacters;
+	vector<npc> npcs;
 	void loadcharscript();
 	void loadlocscript();
 	void interpretuj();
 	void nextline(); 
-	void characteraction(character* a);
+	void mcharacteraction(mcharacter* a);
+	void loadmcharscript();
 	resources(void);
 	~resources(void);
 };
