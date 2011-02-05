@@ -1,0 +1,4 @@
+list of implemented commands:
+In mainscript:
+write "something" - writes something
+if location 1 - checks if actual playing character is in location 1

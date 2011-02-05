@@ -14,6 +14,7 @@ class resources
 {
 public:
 	int line;
+	int actcharid;
 	string activeline; 
 	scriptline active;
 	ifstream msfile; 

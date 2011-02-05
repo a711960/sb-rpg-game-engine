@@ -16,6 +16,7 @@ resources::resources(void)
 	loadmcharscript();
 	loadlocscript();
 	line = 0;
+	actcharid = 0;
 }
 
 resources::~resources(void)
@@ -48,9 +49,17 @@ void resources::interpretuj()
 	{
 		if (active.words[1] == "location")
 		{
-			int loc = atoi(active.words[2].c_str());
-			while (mcharacters[0].locid != loc) mcharacteraction(&mcharacters[0]);
+			int loc = stringtoint(active.words[2]);
+			if(actcharid < mcharacters.size())
+			{
+				while (mcharacters[actcharid].locid != loc) mcharacteraction(&mcharacters[actcharid]);
+			}
+			else cout << "DEBUG MAIN CHARACTER " << actcharid << " NOT EXIST." << endl;
 		}
+	}
+	if (active.words[0] == "active")
+	{
+		actcharid = stringtoint(active.words[1]);
 	}
 }
 
