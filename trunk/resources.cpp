@@ -168,7 +168,7 @@ void resources::loadmcharscript(){
 	string line;
 	if(mcharfile.is_open())
 	{
-		while(charfile.good())
+		while(mcharfile.good())
 		{
 			getline(mcharfile,line);
 			filedata.push_back(line);
