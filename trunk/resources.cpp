@@ -61,6 +61,29 @@ void resources::interpretuj()
 	{
 		actcharid = stringtoint(active.words[1]);
 	}
+	if (active.words[0] == "fight")
+	{
+		if ( actcharid < mcharacters.size())
+		{
+			int enemyid = stringtoint(active.words[1]);
+			bool is_enemy_there = false;
+			while(!is_enemy_there)
+			{
+				for ( int i = 0; i < locations[mcharacters[actcharid].locid].enemynumber; i++)
+				{
+					if ( enemyid == locations[mcharacters[actcharid].locid].enemies[i].ID)
+					{
+						is_enemy_there = true;
+						break;
+					}
+				}
+				if ( is_enemy_there) break;
+				mcharacteraction(&mcharacters[actcharid]);
+			}
+			mcharacters[actcharid].fight(&locations[mcharacters[actcharid].locid].enemies[enemyid]);
+		}
+		else cout << "DEBUG MAIN CHARACTER " << actcharid << " NOT EXIST." << endl;
+	}
 }
 
 void resources::loadcharscript()
@@ -91,6 +114,10 @@ void resources::loadcharscript()
 			if (tmps == "HP:") tmp.HP = stringtoint(filedata[j]);
 			if (tmps == "HP_MAX:") tmp.HP_MAX = stringtoint(filedata[j]);
 			if (tmps == "NAME:") tmp.name = filedata[j];
+			if (tmps == "DEF:") tmp.DEF = stringtoint(filedata[j]);
+			if (tmps == "LEVEL:") tmp.level = stringtoint(filedata[j]);
+			if (tmps == "STR:") tmp.STR = stringtoint(filedata[j]);
+			if (tmps == "BASE_ATK:") tmp.base_atk = stringtoint(filedata[j]);
 			j++;
 			tmps = filedata[j];
 			j++;
@@ -191,6 +218,10 @@ void resources::loadmcharscript(){
 			if (tmps == "HP:") tmp.HP = stringtoint(filedata[j]);
 			if (tmps == "HP_MAX") tmp.HP_MAX = stringtoint(filedata[j]);
 			if (tmps == "LOC_ID:") tmp.locid = stringtoint(filedata[j]);
+			if (tmps == "LEVEL:") tmp.level = stringtoint(filedata[j]);
+			if (tmps == "STR:") tmp.STR = stringtoint(filedata[j]);
+			if (tmps == "BASE_ATK:") tmp.base_atk = stringtoint(filedata[j]);
+			if (tmps == "DEF:") tmp.DEF = stringtoint(filedata[j]);
 			j++;
 			tmps = filedata[j];
 			j++;
@@ -230,13 +261,41 @@ void resources::mcharacteraction(mcharacter* a)
 				}
 			}
 		}
-		if ( actionline.words[0] == "look") {
+		if ( actionline.words[0] == "look")
+		{
 			cout << locations[a->locid].name << endl;
 			cout << locations[a->locid].description << endl;
+			if ( locations[a->locid].enemynumber == 1) cout << "There is one enemy: " << endl << "0 - " << locations[a->locid].enemies[0].name << " (level " << locations[a->locid].enemies[0].level << ", " << locations[a->locid].enemies[0].HP << '/' << locations[a->locid].enemies[0].HP_MAX << ')' << endl;
+			if ( locations[a->locid].enemynumber == 0) cout << "There aren't any enemies" << endl;
+			if ( locations[a->locid].enemynumber > 1)
+			{
+				for (int i = 0; i < locations[a->locid].enemynumber; i++)
+				{
+					cout << i << " - " <<  locations[a->locid].enemies[i].name << " (level " << locations[a->locid].enemies[i].level << ", " << locations[a->locid].enemies[i].HP << '/' << locations[a->locid].enemies[i].HP_MAX << ')' << endl;
+				}
+			}
 			cout << "Exits: " << endl;
 			for(int i = 0; i < locations[a->locid].exitnumber; i++)
 			{
 				cout << locations[locations[a->locid].exitids[i]].name << " - " << locations[a->locid].exitids[i] << endl;
+			}
+		}
+		if ( actionline.words[0] == "atack")
+		{
+			if(actionline.words.size() > 1)
+			{
+				int enemyid = stringtoint(actionline.words[1]);
+				bool is_enemy_there = false;
+				for(int i = 0; i < locations[a->locid].enemynumber; i++)
+				{
+					if(enemyid == locations[a->locid].enemies[i].ID) 
+					{
+						is_enemy_there = true;
+						break;
+					}
+				}
+				if (is_enemy_there) a->fight(&locations[a->locid].enemies[enemyid]);
+				else cout << " There is no enemy which you chosen in that location " << endl;
 			}
 		}
 	}
