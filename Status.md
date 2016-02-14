@@ -1,0 +1,1 @@
+all resources i already planed are loading
